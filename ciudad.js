@@ -13,21 +13,46 @@ function main() {
     scene.fog= new THREE.Fog(0xffffff, 0.15, 100)
 
     document.body.appendChild( renderer.domElement );
-    camera.position.z = 20;
+    camera.position.z = 62;
+    camera.rotation.x=-0.5;
+    camera.position.y=20;
      
     ///////////plano/////////////
 
     const plano = new THREE.Mesh(new THREE.PlaneGeometry(100, 100, 1, 1),   new THREE.MeshBasicMaterial({color:0x515151}))
     plano.rotation.x = -0.5 * Math.PI;
-    plano.position.y=-2;
+    
 
     ///////////edificios///////////
 
+    function generarLetra() {
+        var letras = ["a", "b", "c", "d", "e", "f", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        var numero = (Math.random() * 15).toFixed(0);
+        return letras[numero];
+    }
+
+    function colorHEX() {
+        var coolor = "";
+        for (var i = 0; i < 6; i++) {
+            coolor = coolor + generarLetra();
+        }
+        return "#" + coolor;
+    }
+    
     var _controls = new (function () {
         this.addBuilding = function () {
-        var s = 10 + Math.random()*10;
-        const cube= new THREE.Mesh(new THREE.BoxGeometry(5, s,5), new THREE.MeshBasicMaterial({color:"red"}));
+        var s = 20 + Math.random()*20;
+
+        const cube= new THREE.Mesh(new THREE.BoxGeometry(5, s,5), new THREE.MeshBasicMaterial({color:colorHEX()}));
+
+        
+        
+        cube.position.x = Math.random() * (40 + 40) -40; 
+        cube.position.z = Math.random() * (40 + 40) -40;
+        cube.position.y = s/2;
+
         scene.add(cube);
+
         };
     });
 
@@ -40,6 +65,7 @@ function main() {
     createDataGui();
 
     //////////////////////////////
+
     function createStats() {
       stats = new Stats();
       stats.setMode(2); // 0: fps, 1: ms, 2memory
